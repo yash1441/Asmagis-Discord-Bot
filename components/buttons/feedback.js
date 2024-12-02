@@ -5,6 +5,7 @@ const {
 	ActionRowBuilder,
 	codeBlock,
 } = require("discord.js");
+const lark = require("../../utils/lark");
 require("dotenv").config();
 
 module.exports = {
@@ -42,6 +43,14 @@ module.exports = {
 		await modalReply.reply({
 			content: codeBlock(modalReply.fields.getTextInputValue("details")),
 			ephemeral: true,
+		});
+
+		await lark.createRecord(process.env.BASE, process.env.FEEDBACK_TABLE, {
+			fields: {
+				"Discord ID": interaction.user.id,
+				Username: interaction.user.username,
+				Feedback: modalReply.fields.getTextInputValue("details"),
+			},
 		});
 	},
 };
