@@ -45,12 +45,20 @@ module.exports = {
 			ephemeral: true,
 		});
 
-		await lark.createRecord(process.env.BASE, process.env.FEEDBACK_TABLE, {
-			fields: {
-				"Discord ID": interaction.user.id,
-				Username: interaction.user.username,
-				Feedback: modalReply.fields.getTextInputValue("details"),
-			},
-		});
+		const success = await lark.createRecord(
+			process.env.BASE,
+			process.env.FEEDBACK_TABLE,
+			{
+				fields: {
+					"Discord ID": interaction.user.id,
+					Username: interaction.user.username,
+					Feedback: modalReply.fields.getTextInputValue("details"),
+				},
+			}
+		);
+
+        if (!success) console.log("Failed to create record in lark");
+
+		console.log(success);
 	},
 };
